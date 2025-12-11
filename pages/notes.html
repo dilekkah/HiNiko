@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notlar - HI NIKO</title>
+  <link rel="stylesheet" href="../src/css/style.css">
+  <link rel="stylesheet" href="../src/css/responsive.css">
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">HI NIKO</div>
+      <ul class="nav-links">
+        <li><a href="../src/index.html">Ana Sayfa</a></li>
+        <li><a href="notes.html" class="active">Notlar</a></li>
+        <li><a href="rewards.html">Ödüller</a></li>
+        <li><a href="menu.html">Menü</a></li>
+        <li><a href="student.html">Öğrenci</a></li>
+        <li><a href="profile.html">Profil</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="notes-section">
+      <div class="container">
+        <div class="notes-header">
+          <h1>Notlarım</h1>
+          <button class="btn-primary" id="addNoteBtn">+ Yeni Not Ekle</button>
+        </div>
+
+        <div id="noteForm" class="note-form" style="display: none;">
+          <h2>Yeni Not Oluştur</h2>
+          <input type="text" id="noteTitle" placeholder="Not Başlığı" class="form-input">
+          <textarea id="noteContent" placeholder="Not İçeriği..." class="form-textarea"></textarea>
+          <div class="form-buttons">
+            <button id="saveNoteBtn" class="btn-primary">Kaydet</button>
+            <button id="cancelNoteBtn" class="btn-secondary">İptal</button>
+          </div>
+        </div>
+
+        <div class="notes-grid">
+          <div class="note-card">
+            <div class="note-header">
+              <h3>HI NIKO Hakkında</h3>
+              <button class="note-delete" onclick="deleteNote(this)">✕</button>
+            </div>
+            <p>HI NIKO, en taze kahveleri ve lezzetli pastalarıyla sizi bekleyen özel bir kafe. Kahve severler için
+              tasarlanmış sadakat programımıza katılın ve her kahve alışında puan kazanın!</p>
+            <div class="note-footer">
+              <span class="note-date">11.12.2025</span>
+              <button class="note-like-btn" onclick="addLike(this)">❤️ <span class="like-count">0</span></button>
+            </div>
+          </div>
+          <div class="note-card">
+            <div class="note-header">
+              <h3>Ödül Sistemi</h3>
+              <button class="note-delete" onclick="deleteNote(this)">✕</button>
+            </div>
+            <p>5 kahve alımı sonrasında 1 bedava kahve kazanırsınız! 10 kahveye ulaştığınızda ise bedava pasta hediyesi
+              alırsınız. Ödüllerinizi kazanmak için hemen başlayın!</p>
+            <div class="note-footer">
+              <span class="note-date">11.12.2025</span>
+              <button class="note-like-btn" onclick="addLike(this)">❤️ <span class="like-count">2</span></button>
+            </div>
+          </div>
+          <div class="note-card">
+            <div class="note-header">
+              <h3>Özel İndirimler</h3>
+              <button class="note-delete" onclick="deleteNote(this)">✕</button>
+            </div>
+            <p>Her hafta pazartesi günü tüm kahveler %10 indirimli! Perşembe günleri ise pastalar için özel fiyat
+              uygulanmaktadır. Bizi takip edin ve tüm fırsatlardan yararlanın.</p>
+            <div class="note-footer">
+              <span class="note-date">11.12.2025</span>
+              <button class="note-like-btn" onclick="addLike(this)">❤️ <span class="like-count">5</span></button>
+            </div>
+          </div>
+          <div class="note-card">
+            <div class="note-header">
+              <h3>İpucu: Sıcak Kahve Tarifleri</h3>
+              <button class="note-delete" onclick="deleteNote(this)">✕</button>
+            </div>
+            <p>Evde kahve yaparken en iyi sonuç almak için su sıcaklığını 90-96°C arasında tutun. Kahveyi 25-30 saniye
+              içinde bitirin. Taze su ve kaliteli kahve çekirdekleri kullanmayı unutmayın!</p>
+            <div class="note-footer">
+              <span class="note-date">10.12.2025</span>
+              <button class="note-like-btn" onclick="addLike(this)">❤️ <span class="like-count">3</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 HI NIKO. Tüm hakları saklıdır.</p>
+  </footer>
+
+  <script src="../src/js/main.js"></script>
+</body>
+
+</html>

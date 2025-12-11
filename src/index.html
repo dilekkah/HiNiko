@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HI NIKO - Ana Sayfa</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">HI NIKO</div>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Ana Sayfa</a></li>
+        <li><a href="../pages/notes.html">Notlar</a></li>
+        <li><a href="../pages/rewards.html">Ödüller</a></li>
+        <li><a href="../pages/menu.html">Menü</a></li>
+        <li><a href="../pages/student.html">Öğrenci</a></li>
+        <li><a href="../pages/profile.html">Profil</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Hoş Geldiniz!</h1>
+        <p>QR kod ile giriş yaptınız</p>
+        <button class="btn-primary" onclick="window.location.href='../pages/rewards.html'">Ödüllerimi Gör</button>
+      </div>
+    </section>
+
+    <section class="qr-section">
+      <div class="container">
+        <h2>QR Kod Taraması</h2>
+        <div style="text-align: center; margin-bottom: 20px;">
+          <a href="../../qr-generator.html" class="btn-secondary"
+            style="display: inline-block; padding: 10px 20px; text-decoration: none; border-radius: 8px;">🔧 QR Kod
+            Oluştur (Test İçin)</a>
+        </div>
+        <div class="qr-content">
+          <div class="qr-scanner-container">
+            <video id="qrVideo" class="qr-video"></video>
+            <canvas id="qrCanvas" style="display:none;"></canvas>
+            <button id="startScanBtn" class="btn-primary">Taramayı Başlat</button>
+            <button id="stopScanBtn" class="btn-secondary" style="display:none;">Taramayı Durdur</button>
+          </div>
+          <div class="qr-info">
+            <div class="info-box">
+              <h3>📱 QR Kod Taraması Nasıl Çalışır?</h3>
+              <ul>
+                <li>"Taramayı Başlat" butonuna tıklayın</li>
+                <li>Kameranıza izin verin</li>
+                <li>QR kodu kameraya gösterin</li>
+                <li>Otomatik olarak taranacak ve sonuç gösterilecek</li>
+              </ul>
+            </div>
+            <div class="info-box">
+              <h3>✅ Tarama Sonucu</h3>
+              <div id="qrResult" class="qr-result">
+                <p>Henüz QR kod taranmadı</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="coffee-section">
+      <div class="container">
+        <h2>Kahve Ödül Sistemi</h2>
+        <div class="coffee-cards">
+          <div class="coffee-stamp" id="stamp1"></div>
+          <div class="coffee-stamp" id="stamp2"></div>
+          <div class="coffee-stamp" id="stamp3"></div>
+          <div class="coffee-stamp" id="stamp4"></div>
+          <div class="coffee-stamp" id="stamp5"></div>
+        </div>
+        <p class="stamp-info">5 kahve = 1 bedava kahve!</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 HI NIKO. Tüm hakları saklıdır.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</body>
+
+</html>

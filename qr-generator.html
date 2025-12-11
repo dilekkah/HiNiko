@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Kod Üreticisi - HI NIKO</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #6B4423 0%, #8B5A3C 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h2 {
+      color: #6B4423;
+      margin-bottom: 20px;
+      font-size: 1.3rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #D4A574;
+    }
+
+    .btn {
+      background: #6B4423;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+      width: 100%;
+    }
+
+    .btn:hover {
+      background: #8B5A3C;
+    }
+
+    #qrCodeContainer {
+      text-align: center;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      margin-top: 20px;
+      display: none;
+    }
+
+    #qrCodeContainer.active {
+      display: block;
+    }
+
+    #qrCodeContainer canvas {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .qr-data {
+      margin-top: 15px;
+      padding: 10px;
+      background: white;
+      border-radius: 8px;
+      word-break: break-all;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+
+    .examples {
+      background: #f0f0f0;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      font-size: 0.85rem;
+    }
+
+    .examples h3 {
+      color: #6B4423;
+      margin-bottom: 10px;
+    }
+
+    .examples p {
+      margin-bottom: 8px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .examples p:hover {
+      background: white;
+      color: #D4A574;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .button-group button {
+      flex: 1;
+    }
+
+    .btn-copy {
+      background: #4CAF50;
+    }
+
+    .btn-copy:hover {
+      background: #45a049;
+    }
+
+    .btn-download {
+      background: #2196F3;
+    }
+
+    .btn-download:hover {
+      background: #0b7dda;
+    }
+
+    .success-message {
+      background: #4CAF50;
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 10px;
+      display: none;
+      text-align: center;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .header h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>☕ QR Kod Üreticisi</h1>
+      <p>HI NIKO Sistemi için QR Kodlar Oluşturun</p>
+    </div>
+
+    <div class="content">
+      <!-- Giriş Sistemi -->
+      <div class="card">
+        <h2>🔐 Kullanıcı Girişi</h2>
+        <div class="form-group">
+          <label for="userId">Kullanıcı ID'si:</label>
+          <input type="text" id="userId" placeholder="örn: student123, niko_kahve" value="student001">
+        </div>
+        <button class="btn" onclick="generateLoginQR()">Giriş QR Kodu Oluştur</button>
+        <div class="examples">
+          <h3>💡 Örnekler:</h3>
+          <p onclick="setUserIdAndGenerate('student_niko')">student_niko</p>
+          <p onclick="setUserIdAndGenerate('ahmet_aydin')">ahmet_aydin</p>
+          <p onclick="setUserIdAndGenerate('zeynep_kose')">zeynep_kose</p>
+        </div>
+      </div>
+
+      <!-- Kahve Ekleme -->
+      <div class="card">
+        <h2>☕ Kahve Ekle</h2>
+        <div class="form-group">
+          <label for="coffeeAmount">Kahve Sayısı:</label>
+          <select id="coffeeAmount">
+            <option value="1">1 Kahve</option>
+            <option value="2">2 Kahve</option>
+            <option value="3">3 Kahve</option>
+            <option value="5">5 Kahve</option>
+            <option value="10">10 Kahve</option>
+          </select>
+        </div>
+        <button class="btn" onclick="generateCoffeeQR()">Kahve QR Kodu Oluştur</button>
+        <div class="examples">
+          <h3>💡 Örnekler:</h3>
+          <p onclick="generateCoffeeQRByAmount(1)">1 Kahve</p>
+          <p onclick="generateCoffeeQRByAmount(5)">5 Kahve</p>
+          <p onclick="generateCoffeeQRByAmount(10)">10 Kahve</p>
+        </div>
+      </div>
+
+      <!-- Ödül QR Kodu -->
+      <div class="card">
+        <h2>🎁 Ödül Aktifleştir</h2>
+        <div class="form-group">
+          <label for="rewardType">Ödül Türü:</label>
+          <select id="rewardType">
+            <option value="kahve">Bedava Kahve</option>
+            <option value="pasta">Bedava Pasta</option>
+            <option value="special">Özel Hediye Paketi</option>
+            <option value="indirim">%20 İndirim</option>
+          </select>
+        </div>
+        <button class="btn" onclick="generateRewardQR()">Ödül QR Kodu Oluştur</button>
+        <div class="examples">
+          <h3>💡 Örnekler:</h3>
+          <p onclick="generateRewardQRByType('kahve')">Bedava Kahve</p>
+          <p onclick="generateRewardQRByType('pasta')">Bedava Pasta</p>
+          <p onclick="generateRewardQRByType('special')">Özel Hediye Paketi</p>
+        </div>
+      </div>
+
+      <!-- Ders Notu -->
+      <div class="card">
+        <h2>📝 Ders Notuna Giriş</h2>
+        <div class="form-group">
+          <label for="noteId">Not ID'si:</label>
+          <input type="text" id="noteId" placeholder="örn: note001, kahve_tarifleri" value="note001">
+        </div>
+        <button class="btn" onclick="generateNoteQR()">Not QR Kodu Oluştur</button>
+        <div class="examples">
+          <h3>💡 Örnekler:</h3>
+          <p onclick="setNoteIdAndGenerate('note_kahve_hakkinda')">Kahve Hakkında</p>
+          <p onclick="setNoteIdAndGenerate('note_odulgecmis')">Ödül Geçmişi</p>
+          <p onclick="setNoteIdAndGenerate('note_indirimler')">İndirimler</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- QR Kod Gösterimi -->
+    <div class="card">
+      <div id="qrCodeContainer">
+        <h3 style="color: #6B4423; margin-bottom: 15px;">Oluşturulan QR Kod:</h3>
+        <div id="qrCode" style="background: white; display: inline-block; padding: 20px; border-radius: 8px;"></div>
+        <div class="qr-data" id="qrData"></div>
+        <div class="button-group">
+          <button class="btn btn-copy" onclick="copyQRData()">📋 Kopyala</button>
+          <button class="btn btn-download" onclick="downloadQR()">⬇️ İndir</button>
+        </div>
+        <div class="success-message" id="successMessage">✅ Kopyalandı!</div>
+      </div>
+    </div>
+
+    <!-- Talimatlar -->
+    <div class="card">
+      <h2 style="color: #6B4423;">📖 Nasıl Kullanılır?</h2>
+      <ol style="line-height: 1.8; color: #333;">
+        <li><strong>QR Kod Oluştur:</strong> Yukarıdaki formlardan birini seçerek QR kod oluşturun</li>
+        <li><strong>QR Kodu Yazdır:</strong> "İndir" butonuyla QR kodunu indir veya ekran görüntüsü al</li>
+        <li><strong>Tarama Yap:</strong> Ana sayfada "QR Taraması Başla" butonuna tıklayın</li>
+        <li><strong>Sonuç Al:</strong> Kameranız QR kodu taradığında otomatik işlem gerçekleşecektir:
+          <ul style="margin-left: 20px; margin-top: 10px;">
+            <li>✅ <strong>Giriş:</strong> Kullanıcı sistemde oturum açar</li>
+            <li>✅ <strong>Kahve:</strong> Kahve puan kaydedilir ve ödül kontrol edilir</li>
+            <li>✅ <strong>Ödül:</strong> Ödül etkinleştirilir ve kullanıcıya bildir</li>
+            <li>✅ <strong>Not:</strong> Ders notuna otomatik yönlendirilir</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    let currentQRData = '';
+
+    function generateLoginQR() {
+      const userId = document.getElementById('userId').value || 'user001';
+      currentQRData = `login=${userId}`;
+      displayQR(currentQRData);
+    }
+
+    function generateCoffeeQR() {
+      const amount = document.getElementById('coffeeAmount').value;
+      currentQRData = `coffee=${amount}`;
+      displayQR(currentQRData);
+    }
+
+    function generateCoffeeQRByAmount(amount) {
+      currentQRData = `coffee=${amount}`;
+      displayQR(currentQRData);
+    }
+
+    function generateRewardQR() {
+      const rewardType = document.getElementById('rewardType').value;
+      currentQRData = `reward=${rewardType}`;
+      displayQR(currentQRData);
+    }
+
+    function generateRewardQRByType(rewardType) {
+      currentQRData = `reward=${rewardType}`;
+      displayQR(currentQRData);
+    }
+
+    function generateNoteQR() {
+      const noteId = document.getElementById('noteId').value || 'note001';
+      currentQRData = `note=${noteId}`;
+      displayQR(currentQRData);
+    }
+
+    function setUserIdAndGenerate(userId) {
+      document.getElementById('userId').value = userId;
+      generateLoginQR();
+    }
+
+    function setNoteIdAndGenerate(noteId) {
+      document.getElementById('noteId').value = noteId;
+      generateNoteQR();
+    }
+
+    function displayQR(data) {
+      const qrContainer = document.getElementById('qrCode');
+      const qrDataDisplay = document.getElementById('qrData');
+      const container = document.getElementById('qrCodeContainer');
+
+      // Eski QR kodu temizle
+      qrContainer.innerHTML = '';
+
+      // Yeni QR kod oluştur
+      new QRCode(qrContainer, {
+        text: data,
+        width: 300,
+        height: 300,
+        colorDark: '#6B4423',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+      });
+
+      qrDataDisplay.textContent = `📱 QR Veri: ${data}`;
+      container.classList.add('active');
+    }
+
+    function copyQRData() {
+      navigator.clipboard.writeText(currentQRData).then(() => {
+        const msg = document.getElementById('successMessage');
+        msg.classList.add('show');
+        setTimeout(() => msg.classList.remove('show'), 2000);
+      });
+    }
+
+    function downloadQR() {
+      const canvas = document.querySelector('#qrCode canvas');
+      if (canvas) {
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = `qr-${Date.now()}.png`;
+        link.click();
+      }
+    }
+
+    // Sayfa yüklendiğinde varsayılan QR kod göster
+    window.addEventListener('load', () => {
+      generateLoginQR();
+    });
+  </script>
+</body>
+
+</html>
