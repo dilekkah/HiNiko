@@ -1,3 +1,56 @@
+// Hamburger Menu Toggle
+const hamburgerMenu = document.getElementById('hamburgerMenu');
+const navLinks = document.getElementById('navLinks');
+
+// Overlay oluştur
+let menuOverlay = document.querySelector('.menu-overlay');
+if (!menuOverlay) {
+  menuOverlay = document.createElement('div');
+  menuOverlay.className = 'menu-overlay';
+  document.body.appendChild(menuOverlay);
+}
+
+if (hamburgerMenu && navLinks) {
+  // Hamburger menüye tıklandığında
+  hamburgerMenu.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isActive = hamburgerMenu.classList.toggle('active');
+    navLinks.classList.toggle('active');
+    menuOverlay.classList.toggle('active');
+
+    // Scroll'u engelle/serbest bırak
+    document.body.style.overflow = isActive ? 'hidden' : '';
+  });
+
+  // Overlay'e tıklandığında menüyü kapat
+  menuOverlay.addEventListener('click', () => {
+    hamburgerMenu.classList.remove('active');
+    navLinks.classList.remove('active');
+    menuOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+
+  // Menü linklerine tıklandığında menüyü kapat
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburgerMenu.classList.remove('active');
+      navLinks.classList.remove('active');
+      menuOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // ESC tuşuna basıldığında menüyü kapat
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+      hamburgerMenu.classList.remove('active');
+      navLinks.classList.remove('active');
+      menuOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+}
+
 // QR Code Scanner Fonksiyonları
 let isScanning = false;
 let scanningStream = null;
