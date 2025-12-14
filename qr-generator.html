@@ -41,6 +41,9 @@
       grid-template-columns: 1fr 1fr;
       gap: 30px;
       margin-bottom: 40px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .card {
@@ -214,42 +217,11 @@
     </div>
 
     <div class="content">
-      <!-- Giriş Sistemi -->
-      <div class="card">
-        <h2>🔐 Kullanıcı Girişi</h2>
-        <div class="form-group">
-          <label for="userId">Kullanıcı ID'si:</label>
-          <input type="text" id="userId" placeholder="örn: student123, niko_kahve" value="student001">
-        </div>
-        <button class="btn" onclick="generateLoginQR()">Giriş QR Kodu Oluştur</button>
-        <div class="examples">
-          <h3>💡 Örnekler:</h3>
-          <p onclick="setUserIdAndGenerate('student_niko')">student_niko</p>
-          <p onclick="setUserIdAndGenerate('ahmet_aydin')">ahmet_aydin</p>
-          <p onclick="setUserIdAndGenerate('zeynep_kose')">zeynep_kose</p>
-        </div>
-      </div>
-
       <!-- Kahve Ekleme -->
       <div class="card">
         <h2>☕ Kahve Ekle</h2>
-        <div class="form-group">
-          <label for="coffeeAmount">Kahve Sayısı:</label>
-          <select id="coffeeAmount">
-            <option value="1">1 Kahve</option>
-            <option value="2">2 Kahve</option>
-            <option value="3">3 Kahve</option>
-            <option value="5">5 Kahve</option>
-            <option value="10">10 Kahve</option>
-          </select>
-        </div>
+        <p style="color: #666; margin-bottom: 15px;">Müşteri kahve satın aldığında bu QR kodu kullanın</p>
         <button class="btn" onclick="generateCoffeeQR()">Kahve QR Kodu Oluştur</button>
-        <div class="examples">
-          <h3>💡 Örnekler:</h3>
-          <p onclick="generateCoffeeQRByAmount(1)">1 Kahve</p>
-          <p onclick="generateCoffeeQRByAmount(5)">5 Kahve</p>
-          <p onclick="generateCoffeeQRByAmount(10)">10 Kahve</p>
-        </div>
       </div>
 
       <!-- Ödül QR Kodu -->
@@ -270,22 +242,6 @@
           <p onclick="generateRewardQRByType('kahve')">Bedava Kahve</p>
           <p onclick="generateRewardQRByType('pasta')">Bedava Pasta</p>
           <p onclick="generateRewardQRByType('special')">Özel Hediye Paketi</p>
-        </div>
-      </div>
-
-      <!-- Ders Notu -->
-      <div class="card">
-        <h2>📝 Ders Notuna Giriş</h2>
-        <div class="form-group">
-          <label for="noteId">Not ID'si:</label>
-          <input type="text" id="noteId" placeholder="örn: note001, kahve_tarifleri" value="note001">
-        </div>
-        <button class="btn" onclick="generateNoteQR()">Not QR Kodu Oluştur</button>
-        <div class="examples">
-          <h3>💡 Örnekler:</h3>
-          <p onclick="setNoteIdAndGenerate('note_kahve_hakkinda')">Kahve Hakkında</p>
-          <p onclick="setNoteIdAndGenerate('note_odulgecmis')">Ödül Geçmişi</p>
-          <p onclick="setNoteIdAndGenerate('note_indirimler')">İndirimler</p>
         </div>
       </div>
     </div>
@@ -313,10 +269,8 @@
         <li><strong>Tarama Yap:</strong> Ana sayfada "QR Taraması Başla" butonuna tıklayın</li>
         <li><strong>Sonuç Al:</strong> Kameranız QR kodu taradığında otomatik işlem gerçekleşecektir:
           <ul style="margin-left: 20px; margin-top: 10px;">
-            <li>✅ <strong>Giriş:</strong> Kullanıcı sistemde oturum açar</li>
-            <li>✅ <strong>Kahve:</strong> Kahve puan kaydedilir ve ödül kontrol edilir</li>
-            <li>✅ <strong>Ödül:</strong> Ödül etkinleştirilir ve kullanıcıya bildir</li>
-            <li>✅ <strong>Not:</strong> Ders notuna otomatik yönlendirilir</li>
+            <li>✅ <strong>Kahve:</strong> 1 kahve puanı kaydedilir ve 5 kahveye ulaşınca ödül aktif olur</li>
+            <li>✅ <strong>Ödül:</strong> Seçilen ödül etkinleştirilir ve kullanıcıya gösterilir</li>
           </ul>
         </li>
       </ol>
@@ -326,20 +280,9 @@
   <script>
     let currentQRData = '';
 
-    function generateLoginQR() {
-      const userId = document.getElementById('userId').value || 'user001';
-      currentQRData = `login=${userId}`;
-      displayQR(currentQRData);
-    }
-
     function generateCoffeeQR() {
-      const amount = document.getElementById('coffeeAmount').value;
-      currentQRData = `coffee=${amount}`;
-      displayQR(currentQRData);
-    }
-
-    function generateCoffeeQRByAmount(amount) {
-      currentQRData = `coffee=${amount}`;
+      // Kahve eklerken her zaman sadece 1 kahve
+      currentQRData = `coffee=1`;
       displayQR(currentQRData);
     }
 
@@ -352,22 +295,6 @@
     function generateRewardQRByType(rewardType) {
       currentQRData = `reward=${rewardType}`;
       displayQR(currentQRData);
-    }
-
-    function generateNoteQR() {
-      const noteId = document.getElementById('noteId').value || 'note001';
-      currentQRData = `note=${noteId}`;
-      displayQR(currentQRData);
-    }
-
-    function setUserIdAndGenerate(userId) {
-      document.getElementById('userId').value = userId;
-      generateLoginQR();
-    }
-
-    function setNoteIdAndGenerate(noteId) {
-      document.getElementById('noteId').value = noteId;
-      generateNoteQR();
     }
 
     function displayQR(data) {
@@ -412,7 +339,7 @@
 
     // Sayfa yüklendiğinde varsayılan QR kod göster
     window.addEventListener('load', () => {
-      generateLoginQR();
+      generateCoffeeQR();
     });
   </script>
 </body>
