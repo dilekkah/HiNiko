@@ -168,11 +168,31 @@ function showQRResult(message, type = 'info') {
 }
 
 function addCoffeeStamps(count) {
+  // Toplam kahve sayısını güncelle
+  let totalCoffees = parseInt(localStorage.getItem('totalCoffees') || '0');
+  totalCoffees += count;
+  localStorage.setItem('totalCoffees', totalCoffees.toString());
+
   for (let i = 0; i < count && coffeeCount < 5; i++) {
     coffeeStamps[coffeeCount].classList.add('filled');
     coffeeCount++;
 
     if (coffeeCount === 5) {
+      // Ödül kahve sayısını artır
+      let rewardCoffees = parseInt(localStorage.getItem('rewardCoffees') || '0');
+      rewardCoffees++;
+      localStorage.setItem('rewardCoffees', rewardCoffees.toString());
+
+      // Ödül geçmişine ekle
+      const history = JSON.parse(localStorage.getItem('rewardHistory') || '[]');
+      const today = new Date();
+      const dateStr = today.toLocaleDateString('tr-TR');
+      history.unshift({
+        date: dateStr,
+        message: '🎉 Bedava Kahve kazandınız! (5 kahve tamamlandı)'
+      });
+      localStorage.setItem('rewardHistory', JSON.stringify(history));
+
       alert('Tebrikler! Bedava kahve kazandınız! 🎉');
       coffeeCount = 0;
       coffeeStamps.forEach(s => s.classList.remove('filled'));

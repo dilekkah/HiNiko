@@ -36,72 +36,38 @@
 
         <div class="stats-grid">
           <div class="stat-card">
-            <div class="stat-number">5</div>
-            <div class="stat-label">Toplam Kahve</div>
+            <div class="stat-number" id="totalCoffees">0</div>
+            <div class="stat-label">Toplam Giriş Yaptığı Kahve</div>
           </div>
           <div class="stat-card">
-            <div class="stat-number">2</div>
-            <div class="stat-label">Kazanılan Ödül</div>
+            <div class="stat-number" id="rewardCoffees">0</div>
+            <div class="stat-label">Kazanılan Ödül Kahve Sayısı</div>
           </div>
           <div class="stat-card">
-            <div class="stat-number">3</div>
-            <div class="stat-label">Kalan Ödül</div>
+            <div class="stat-number" id="currentProgress">0</div>
+            <div class="stat-label">Mevcut İlerleme (Bir Sonraki Ödüle)</div>
           </div>
         </div>
 
         <div class="rewards-list">
-          <h2>Mevcut Ödüller</h2>
-          <div class="reward-item">
+          <h2>Bir Sonraki Ödüle Doğru</h2>
+          <div class="reward-item" id="nextReward">
             <span class="reward-icon">☕</span>
             <div class="reward-info">
               <h3>Bedava Kahve</h3>
-              <p>5 kahve sonrası kazanılır</p>
+              <p>Her 5 kahve sonrası kazanılır</p>
               <div class="reward-progress">
-                <div class="progress-bar" style="width: 100%"></div>
+                <div class="progress-bar" id="rewardProgressBar" style="width: 0%"></div>
               </div>
-              <p class="progress-text">5/5 Tamamlandı ✓</p>
+              <p class="progress-text" id="rewardProgressText">0/5 kahve</p>
             </div>
-            <button class="btn-reward">Kullan</button>
-          </div>
-          <div class="reward-item">
-            <span class="reward-icon">🍰</span>
-            <div class="reward-info">
-              <h3>Bedava Pasta</h3>
-              <p>10 kahve sonrası kazanılır</p>
-              <div class="reward-progress">
-                <div class="progress-bar" style="width: 60%"></div>
-              </div>
-              <p class="progress-text">6/10 ilerleyiş</p>
-            </div>
-            <button class="btn-reward">Kilidi Aç</button>
-          </div>
-          <div class="reward-item">
-            <span class="reward-icon">🎁</span>
-            <div class="reward-info">
-              <h3>Özel Hediye Paketi</h3>
-              <p>20 kahve sonrası kazanılır</p>
-              <div class="reward-progress">
-                <div class="progress-bar" style="width: 30%"></div>
-              </div>
-              <p class="progress-text">6/20 ilerleyiş</p>
-            </div>
-            <button class="btn-reward">Kilidi Aç</button>
           </div>
         </div>
 
         <div class="rewards-history">
           <h2>Ödül Geçmişi</h2>
-          <div class="history-item">
-            <div class="history-date">11.12.2025</div>
-            <div class="history-content">
-              <p>Bedava Kahve kazandınız! 🎉</p>
-            </div>
-          </div>
-          <div class="history-item">
-            <div class="history-date">05.12.2025</div>
-            <div class="history-content">
-              <p>5. kahvenize ulaştınız!</p>
-            </div>
+          <div id="historyList">
+            <p style="text-align: center; color: #666;">Henüz ödül kazanılmadı</p>
           </div>
         </div>
       </div>
@@ -113,6 +79,52 @@
   </footer>
 
   <script src="../src/js/main.js"></script>
+  <script>
+    // LocalStorage'dan kahve verilerini al
+    function loadRewardsData() {
+      const totalCoffees = parseInt(localStorage.getItem('totalCoffees') || '0');
+      const rewardCoffees = parseInt(localStorage.getItem('rewardCoffees') || '0');
+      const currentProgress = totalCoffees % 5; // 5'e bölümünden kalan
+
+      // İstatistikleri güncelle
+      document.getElementById('totalCoffees').textContent = totalCoffees;
+      document.getElementById('rewardCoffees').textContent = rewardCoffees;
+      document.getElementById('currentProgress').textContent = currentProgress;
+
+      // İlerleme çubuğunu güncelle
+      const progressPercent = (currentProgress / 5) * 100;
+      document.getElementById('rewardProgressBar').style.width = progressPercent + '%';
+      document.getElementById('rewardProgressText').textContent = `${currentProgress}/5 kahve`;
+
+      // Ödül geçmişini yükle
+      loadRewardHistory();
+    }
+
+    function loadRewardHistory() {
+      const history = JSON.parse(localStorage.getItem('rewardHistory') || '[]');
+      const historyList = document.getElementById('historyList');
+
+      if (history.length === 0) {
+        historyList.innerHTML = '<p style="text-align: center; color: #666;">Henüz ödül kazanılmadı</p>';
+        return;
+      }
+
+      historyList.innerHTML = history.map(item => `
+        <div class="history-item">
+          <div class="history-date">${item.date}</div>
+          <div class="history-content">
+            <p>${item.message}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Sayfa yüklendiğinde verileri yükle
+    window.addEventListener('load', loadRewardsData);
+
+    // LocalStorage değişikliklerini dinle (diğer sekmelerden güncellemeler için)
+    window.addEventListener('storage', loadRewardsData);
+  </script>
 </body>
 
 </html>
